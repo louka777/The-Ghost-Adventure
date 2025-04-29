@@ -1,8 +1,31 @@
 body {
-  background-color: black;
+  background-color: #000;
   color: white;
   font-family: Arial, sans-serif;
   text-align: center;
+  padding: 10px;
+}
+
+#chat {
+  margin-bottom: 20px;
+  text-align: left;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.message {
+  margin: 10px 0;
+}
+
+.mod-pseudo {
+  color: violet;
+  font-weight: bold;
+}
+
+.mod-message {
+  color: red;
+  font-weight: bold;
+  animation: vibrate 0.2s infinite alternate;
 }
 
 #title {
@@ -10,31 +33,8 @@ body {
   text-shadow: 0 0 10px red;
 }
 
-#messages {
-  list-style: none;
-  padding: 0;
-  margin: 20px;
-}
-
-#messages li {
-  padding: 5px;
-  margin: 5px 0;
-  font-weight: bold;
-}
-
-.moderator {
-  color: violet;
-}
-
-.moderator-message {
-  color: red;
-  animation: vibrate 0.3s infinite;
-}
-
+/* Animation pour les messages modérateur */
 @keyframes vibrate {
-  0% { transform: translate(0); }
-  25% { transform: translate(2px, 2px); }
-  50% { transform: translate(-2px, -2px); }
-  75% { transform: translate(2px, -2px); }
-  100% { transform: translate(-2px, 2px); }
+  0% { transform: translateX(0); }
+  100% { transform: translateX(2px); }
 }

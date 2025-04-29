@@ -1,27 +1,31 @@
+const socket = io();
 let pseudo = "";
-let isModerator = false;
 
-// Demander pseudo
-document.getElementById('pseudo').addEventListener('blur', function() {
-  pseudo = this.value.trim();
-  if (pseudo.toLowerCase() === "admin") {
-    isModerator = true;
+document.getElementById('pseudo').addEventListener('blur', () => {
+  pseudo = document.getElementById('pseudo').value.trim();
+  socket.emit('new-user', pseudo);
+  if (pseudo.toLowerCase() === 'admin') {
     document.getElementById('admin-controls').style.display = 'block';
   }
 });
 
 function sendMessage() {
-  const text = document.getElementById('message').value.trim();
-  if (!pseudo || !text) return alert("Entre un pseudo et un message !");
-  
+  const messageInput = document.getElementById('message');
+  const message = messageInput.value.trim();
+  if (message === "") return;
+  socket.emit('send-message', message);
+  messageInput.value = "";
+}
+
+socket.on('chat-message', (data) => {
   const chat = document.getElementById('chat');
   const div = document.createElement('div');
   div.className = "message";
-  
+
   const nameSpan = document.createElement('span');
   const textSpan = document.createElement('span');
-  
-  if (isModerator) {
+
+  if (data.isMod) {
     nameSpan.className = "mod-pseudo";
     textSpan.className = "mod-message";
   } else {
@@ -29,20 +33,22 @@ function sendMessage() {
     nameSpan.style.color = 'white';
     textSpan.style.color = 'white';
   }
-  
-  nameSpan.textContent = pseudo + ": ";
-  textSpan.textContent = text;
-  
+
+  nameSpan.textContent = data.pseudo + ": ";
+  textSpan.textContent = data.message;
+
   div.appendChild(nameSpan);
   div.appendChild(textSpan);
   chat.appendChild(div);
-  
-  document.getElementById('message').value = "";
+
+  chat.scrollTop = chat.scrollHeight;
+});
+
+function sendFlash() {
+  socket.emit('flash');
 }
 
-// Fonction spéciale pour modérateur : flash la page
-function flash() {
-  if (!isModerator) return;
+socket.on('flash', () => {
   let flashes = 0;
   const interval = setInterval(() => {
     document.body.style.backgroundColor = flashes % 2 === 0 ? 'white' : 'black';
@@ -52,4 +58,4 @@ function flash() {
       document.body.style.backgroundColor = 'black';
     }
   }, 100);
-}
+});

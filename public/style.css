@@ -1,0 +1,40 @@
+body {
+  background-color: black;
+  color: white;
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
+
+#title {
+  color: red;
+  text-shadow: 0 0 10px red;
+}
+
+#messages {
+  list-style: none;
+  padding: 0;
+  margin: 20px;
+}
+
+#messages li {
+  padding: 5px;
+  margin: 5px 0;
+  font-weight: bold;
+}
+
+.moderator {
+  color: violet;
+}
+
+.moderator-message {
+  color: red;
+  animation: vibrate 0.3s infinite;
+}
+
+@keyframes vibrate {
+  0% { transform: translate(0); }
+  25% { transform: translate(2px, 2px); }
+  50% { transform: translate(-2px, -2px); }
+  75% { transform: translate(2px, -2px); }
+  100% { transform: translate(-2px, 2px); }
+}

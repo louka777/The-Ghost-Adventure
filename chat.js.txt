@@ -1,0 +1,23 @@
+const socket = io();
+
+let username = prompt("Choisis ton pseudo :");
+
+socket.emit('setUsername', username);
+
+document.getElementById('send').addEventListener('click', () => {
+  const input = document.getElementById('input');
+  if (input.value.trim() !== '') {
+    socket.emit('chatMessage', input.value);
+    input.value = '';
+  }
+});
+
+socket.on('chatMessage', ({ user, message }) => {
+  const item = document.createElement('li');
+  item.innerHTML = `<strong class="${user.isMod ? 'moderator' : ''}">${user.name} :</strong> <span class="${user.isMod ? 'moderator-message' : ''}">${message}</span>`;
+  document.getElementById('messages').appendChild(item);
+});
+
+socket.on('userList', (users) => {
+  console.log(users); // Optionnel : affichage dans console
+});
